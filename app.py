@@ -11,7 +11,7 @@ example_df = pd.read_csv("WA_Fn-UseC_-Telco-Customer-Churn.csv")
 if "customerID" in example_df.columns:
     example_df.drop("customerID", axis=1, inplace=True)
 
-st.set_page_config(page_title="Customer Churn Predictor", layout="wide")
+st.set_page_config(page_title="Geetesh's Customer Churn Prediction AI solution", layout="wide")
 st.title("📊 Customer Churn Predictor")
 st.markdown("Upload customer data and predict churn risk instantly.")
 
