@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import joblib
@@ -5,7 +6,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import shap
 
-# Load model and sample data
 model = joblib.load("churn_model.pkl")
 example_df = pd.read_csv("WA_Fn-UseC_-Telco-Customer-Churn.csv")
 if "customerID" in example_df.columns:
@@ -53,7 +53,6 @@ if uploaded_file:
         st.dataframe(filtered_df)
 
         st.subheader("💡 Recommendations")
-
         def generate_recommendation(row):
             if row["Predicted_Churn"] == "Yes":
                 recs = []
@@ -72,7 +71,6 @@ if uploaded_file:
 
         st.subheader("🔍 SHAP Explanation (Feature Impact)")
         shap.initjs()
-
         sample_input = input_df.drop(columns=["Churn_Probability", "Predicted_Churn"]).head(100)
 
         @st.cache_resource
