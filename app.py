@@ -12,7 +12,7 @@ if "customerID" in example_df.columns:
     example_df.drop("customerID", axis=1, inplace=True)
 
 st.set_page_config(page_title="Geetesh's Customer Churn Prediction AI solution", layout="wide")
-st.title("📊 Customer Churn Predictor")
+st.title("📊 Geetesh's Customer Churn Prediction AI solution")
 st.markdown("Upload customer data and predict churn risk instantly.")
 
 st.sidebar.header("Upload Your Data")
