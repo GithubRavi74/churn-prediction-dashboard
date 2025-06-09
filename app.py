@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import shap
 
-model = joblib.load("churn_model.pkl")
+model = joblib.load("churn-model.pkl")
 example_df = pd.read_csv("WA_Fn-UseC_-Telco-Customer-Churn.csv")
 if "customerID" in example_df.columns:
     example_df.drop("customerID", axis=1, inplace=True)
