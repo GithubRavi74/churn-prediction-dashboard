@@ -12,7 +12,7 @@ st.set_page_config(page_title="Geetesh's Customer Churn Prediction AI solution",
 st.title("📊 Geetesh's Customer Churn Prediction AI solution")
 st.markdown("Upload customer data and predict churn risk instantly.")
 
-st.sidebar.header("📄 Sample Data Preview")
+st.sidebar.header("📄 Sample Data format that you need to follow when uploading your csv")
 # Load and display a few rows of the sample dataset
 @st.cache_data
 def load_sample_data():
@@ -22,13 +22,10 @@ def load_sample_data():
     return df.head(5)  # Show only top 5 rows
 
 sample_df = load_sample_data()
-st.sidebar.write("Sample input format:")
+#st.sidebar.write("Sample input format:")
 st.sidebar.dataframe(sample_df)
-
-
-st.sidebar.markdown("---")
-st.sidebar.subheader("Upload Your Data")
-uploaded_file = st.sidebar.file_uploader("Upload CSV", type=["csv"])
+st.sidebar.subheader("Upload Your Data similar to the above format")
+uploaded_file = st.sidebar.file_uploader("", type=["csv"])
 
 
 
