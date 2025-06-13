@@ -7,9 +7,6 @@ import seaborn as sns
 import shap
 
 model = joblib.load("churn-model.pkl")
-example_df = pd.read_csv("WA_Fn-UseC_-Telco-Customer-Churn.csv")
-if "customerID" in example_df.columns:
-    example_df.drop("customerID", axis=1, inplace=True)
 
 st.set_page_config(page_title="Geetesh's Customer Churn Prediction AI solution", layout="wide")
 st.title("📊 Geetesh's Customer Churn Prediction AI solution")
@@ -17,6 +14,23 @@ st.markdown("Upload customer data and predict churn risk instantly.")
 
 st.sidebar.header("Upload Your Data")
 uploaded_file = st.sidebar.file_uploader("Upload CSV", type=["csv"])
+
+st.sidebar.markdown("---")
+st.sidebar.subheader("📄 Sample Data Preview")
+
+# Load and display a few rows of the sample dataset
+@st.cache_data
+def load_sample_data():
+    df = pd.read_csv("WA_Fn-UseC_-Telco-Customer-Churn.csv")
+    if "customerID" in df.columns:
+        df.drop("customerID", axis=1, inplace=True)
+    return df.head(5)  # Show only top 5 rows
+
+sample_df = load_sample_data()
+st.sidebar.write("Sample input format:")
+st.sidebar.dataframe(sample_df)
+
+
 
 if uploaded_file:
     input_df = pd.read_csv(uploaded_file)
