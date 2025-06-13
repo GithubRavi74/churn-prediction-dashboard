@@ -80,8 +80,12 @@ if uploaded_file:
             return explainer, shap_values
 
         explainer, shap_values = get_shap_explainer(model, sample_input)
-        shap.summary_plot(shap_values, sample_input)
-        st.pyplot(bbox_inches='tight')
+        #shap.summary_plot(shap_values, sample_input)--Cannot use this  matplotlib’s global figure object, as this is now deprecated in Streamlit for safety and performance reasons.
+        #st.pyplot(bbox_inches='tight')
+        fig, ax = plt.subplots()
+        shap.summary_plot(shap_values, sample_input, show=False)  # Don't auto-show
+        plt.tight_layout()
+        st.pyplot(fig)
 
         st.download_button("Download Results CSV", data=input_df.to_csv(index=False), file_name="churn_predictions.csv")
 
