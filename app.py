@@ -74,7 +74,7 @@ if uploaded_file:
         sample_input = input_df.drop(columns=["Churn_Probability", "Predicted_Churn"]).head(100)
 
         @st.cache_resource
-        def get_shap_explainer(model, data_sample):
+        def get_shap_explainer(_model, data_sample):  
             explainer = shap.TreeExplainer(model)
             shap_values = explainer.shap_values(data_sample)
             return explainer, shap_values
