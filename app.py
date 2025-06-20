@@ -83,7 +83,7 @@ with col2:
         # Wrap entire section in container + CSS
         with st.markdown('<div class="upload-section">', unsafe_allow_html=True):
             st.markdown(
-                "### SELECT YOUR FILE FOR UPLOAD 👇",
+                "### SELECT YOUR CSV FILE FOR UPLOAD 👇",
                 unsafe_allow_html=True
             )
         uploaded_file = st.file_uploader("", type=["csv"])
