@@ -8,6 +8,20 @@ import shap
 
 model = joblib.load("churn-model.pkl")
 
+###########################################
+# force sidebar to stay expanded using CSS
+st.markdown(
+    """
+    <style>
+    [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
+        display: block;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+############################################
+
 st.set_page_config(page_title="Geetesh's Customer Churn Prediction AI solution", layout="wide")
 st.title("📊 NTTIS Customer Churn Prediction AI solution")
 st.markdown("Upload customer data and predict churn risk instantly.")
@@ -26,9 +40,6 @@ sample_df = load_sample_data()
 st.sidebar.dataframe(sample_df)
 st.sidebar.subheader("Upload Your Data similar to the above format")
 uploaded_file = st.sidebar.file_uploader("", type=["csv"])
-
-
-
 if uploaded_file:
     input_df = pd.read_csv(uploaded_file)
 
