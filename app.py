@@ -42,10 +42,10 @@ sample_df = load_sample_data()
 
 
 ######################################################################
-# USE THIS CODE IF THE SAMPLE DATA NEEDS TO BE SHOWN AS PULL DOWN MENU
+# SAMPLE DATA SHOWN WITH PULL DOWN MENU
 with st.expander("📄 Click here to see the sample Data format that you need to follow when uploading your csv"):
- st.markdown("### 📊 Sample Data Format. Upload Your Data similar to the below format")   # Heading inside expander   
- st.dataframe(sample_df)
+  st.markdown("### 📊 Sample Data Format. Upload Your data similar to the below format")   # Heading inside expander   
+  st.dataframe(sample_df)
  ###########################################################
 
 ######################################################################
