@@ -10,7 +10,12 @@ model = joblib.load("churn-model.pkl")
 
 st.set_page_config(page_title="NTTIS Customer Churn Prediction AI solution", layout="wide")
 st.title("📊 NTTIS Customer Churn Prediction AI solution")
-st.markdown("Please upload a data file in CSV format to begin")
+st.markdown(
+    "<h5 style='color:blue; font-size:18px; font-weight:bold;'>Please upload a data file in CSV format to begin</h5>",
+    unsafe_allow_html=True
+)
+
+#st.markdown("Please upload a data file in CSV format to begin")
  
 
 
@@ -52,7 +57,7 @@ with st.expander("📄 Click here to see the sample Data format that you need to
 # if you want the button to appear in center use this code
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    uploaded_file = st.file_uploader("Upload CSV file 👉 ", type=["csv"])
+    uploaded_file = st.file_uploader("SELECT FILE TO UPLOAD 👇", type=["csv"])
 
 if uploaded_file:
     input_df = pd.read_csv(uploaded_file)
