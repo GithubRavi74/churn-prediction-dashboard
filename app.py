@@ -10,7 +10,8 @@ model = joblib.load("churn-model.pkl")
 
 st.set_page_config(page_title="Geetesh's Customer Churn Prediction AI solution", layout="wide")
 st.title("📊 NTTIS Customer Churn Prediction AI solution")
-st.markdown("Upload customer data and predict churn risk instantly.")
+#st.markdown("Upload customer data and predict churn risk instantly.")
+st.info(" Please upload a CSV file to begin.")
 
 
 # Load and display a few rows of the sample dataset
@@ -120,7 +121,7 @@ if uploaded_file:
     except Exception as e:
         st.error(f"⚠️ Error processing file: {e}")
 else:
-    st.info("👈 Please upload a CSV file to begin.")
+    
 
 st.markdown("---")
 st.caption("Made with ❤️ using Streamlit")
