@@ -76,7 +76,7 @@ with col2:
         </style>
         <div class='uploadbox'>
             <h5 style='color:green; font-size:18px; font-weight:bold;'>
-                SELECT YOUR FILE FOR UPLOAD 👇
+                SELECT YOUR CSV FILE FOR UPLOAD 👇
             </h5>
         </div>
         """,
