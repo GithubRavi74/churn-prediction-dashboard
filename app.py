@@ -11,12 +11,12 @@ model = joblib.load("churn-model.pkl")
 st.set_page_config(page_title="NTTIS Customer Churn Prediction AI solution", layout="wide")
 st.title("📊 NTTIS Customer Churn Prediction AI solution")
 
-...
-st.markdown(
-    "<h5 style='color:blue; font-size:18px; font-weight:bold;'>Please upload a data file in CSV format to begin</h5>",
-    unsafe_allow_html=True
-)
-...
+#
+#st.markdown(
+#   "<h5 style='color:blue; font-size:18px; font-weight:bold;'>Please upload a data file in CSV format to begin</h5>",
+#    unsafe_allow_html=True
+#)
+#...
 #st.markdown("Please upload a data file in CSV format to begin")
  
 
