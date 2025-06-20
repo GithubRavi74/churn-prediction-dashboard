@@ -57,11 +57,11 @@ with st.expander("📄 Click here to see the data format that you need to follow
 # Streamlit automatically gives file_uploader the full width of the container (default style).
 # The "Drag and drop" text appears on the left; the Browse button on the right — taking the entire row width.
 # if you want the button to appear in center use this code
-
 st.markdown(
-    "<h5 style='color:green; font-size:18px; font-weight:bold;'> SELECT FILE TO UPLOAD 👇 (CSV, Max 200MB)</h5>",
+    "<h5 style='color:green; font-size:18px; font-weight:bold; text-align:center;'> SELECT YOUR FILE FOR UPLOAD 👇</h5>",
     unsafe_allow_html=True
 )
+
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     uploaded_file = st.file_uploader("", type=["csv"])
