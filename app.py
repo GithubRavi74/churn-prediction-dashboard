@@ -121,7 +121,7 @@ if uploaded_file:
     except Exception as e:
         st.error(f"⚠️ Error processing file: {e}")
 else:
-    
+    st.markdown("---")
 
 st.markdown("---")
 st.caption("Made with ❤️ using Streamlit")
