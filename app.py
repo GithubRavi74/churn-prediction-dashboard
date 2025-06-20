@@ -8,25 +8,11 @@ import shap
 
 model = joblib.load("churn-model.pkl")
 
-###########################################
-# force sidebar to stay expanded using CSS
-st.markdown(
-    """
-    <style>
-    [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
-        display: block;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-############################################
-
 st.set_page_config(page_title="Geetesh's Customer Churn Prediction AI solution", layout="wide")
 st.title("📊 NTTIS Customer Churn Prediction AI solution")
 st.markdown("Upload customer data and predict churn risk instantly.")
 
-st.sidebar.header("📄 Sample Data format that you need to follow when uploading your csv")
+
 # Load and display a few rows of the sample dataset
 @st.cache_data
 def load_sample_data():
@@ -36,9 +22,19 @@ def load_sample_data():
     return df.head(5)  # Show only top 5 rows
 
 sample_df = load_sample_data()
+
+#######################################################
+#USE THIS CODE IF YOU WANT SAMPLE DATA TO BE SHOWN IN SIDEBAR.
+#st.sidebar.header("📄 Sample Data format that you need to follow when uploading your csv")
 #st.sidebar.write("Sample input format:")
-st.sidebar.dataframe(sample_df)
-st.sidebar.subheader("Upload Your Data similar to the above format")
+#st.sidebar.dataframe(sample_df)
+#st.sidebar.subheader("Upload Your Data similar to the above format")
+#####################################################
+
+with st.expander("📄 Sample Data format that you need to follow when uploading your csv"):
+    st.dataframe(sample_df)
+    st.write("Upload Your Data similar to the above format")
+
 uploaded_file = st.sidebar.file_uploader("", type=["csv"])
 if uploaded_file:
     input_df = pd.read_csv(uploaded_file)
