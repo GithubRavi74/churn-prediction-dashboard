@@ -11,7 +11,7 @@ model = joblib.load("churn-model.pkl")
 st.set_page_config(page_title="NTTIS Customer Churn Prediction AI solution", layout="wide")
 st.title("📊 NTTIS Customer Churn Prediction AI solution")
 # st.markdown("Upload customer data and predict churn risk instantly.")
-st.info(" Please DO upload a CSV file to begin.")
+st.info(" Please upload a CSV file to begin.")
 
 
 # Load and display a few rows of the sample dataset
@@ -47,8 +47,13 @@ with st.expander("📄 Pull down to see the sample Data format that you need to 
 # st.dataframe(sample_df)
 # st.write("Upload Your Data similar to the above format")
 
+# Streamlit automatically gives file_uploader the full width of the container (default style).
+# The "Drag and drop" text appears on the left; the Browse button on the right — taking the entire row width.
+# if you want the button to appear in center use this code
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    uploaded_file = st.file_uploader("Upload CSV file 👉 ", type=["csv"])
 
-uploaded_file = st.file_uploader("", type=["csv"])
 if uploaded_file:
     input_df = pd.read_csv(uploaded_file)
 
