@@ -8,10 +8,10 @@ import shap
 
 model = joblib.load("churn-model.pkl")
 
-st.set_page_config(page_title="Geetesh's Customer Churn Prediction AI solution", layout="wide")
+st.set_page_config(page_title="NTTIS Customer Churn Prediction AI solution", layout="wide")
 st.title("📊 NTTIS Customer Churn Prediction AI solution")
-#st.markdown("Upload customer data and predict churn risk instantly.")
-st.info(" Please upload a CSV file to begin.")
+# st.markdown("Upload customer data and predict churn risk instantly.")
+st.info(" Please DO upload a CSV file to begin.")
 
 
 # Load and display a few rows of the sample dataset
