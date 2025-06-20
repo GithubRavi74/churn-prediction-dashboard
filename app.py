@@ -14,7 +14,8 @@ st.markdown("Upload customer data and predict churn risk instantly.")
 
 
 # Load and display a few rows of the sample dataset
-@st.cache_data
+# @st.cache_data
+
 def load_sample_data():
     df = pd.read_csv("WA_Fn-UseC_-Telco-Customer-Churn.csv")
     if "customerID" in df.columns:
