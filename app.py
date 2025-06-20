@@ -60,29 +60,34 @@ with st.expander("📄 Click here to see the data format that you need to follow
 
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    with st.container():
-        st.markdown(
-            """
-            <div style='
-                border: 2px solid #4CAF50;
-                padding: 20px;
-                border-radius: 10px;
-                background-color: #f9f9f9;
-                text-align: center;
-                margin-bottom: 20px;
-            '>
-                <h5 style='color:green; font-size:18px; font-weight:bold;'>
-                    SELECT YOUR FILE FOR UPLOAD 👇
-                </h5>
 
-                <div style='margin-top: 15px;'>
-            """,
-            unsafe_allow_html=True
-        )
+ with st.container():
+    st.markdown(
+        """
+        <style>
+        .uploadbox {
+            border: 2px solid #4CAF50;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        </style>
+        <div class='uploadbox'>
+            <h5 style='color:green; font-size:18px; font-weight:bold;'>
+                SELECT YOUR FILE FOR UPLOAD 👇
+            </h5>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
+    # uploader outside the HTML div — inside same container
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
         uploaded_file = st.file_uploader("", type=["csv"])
 
-        st.markdown("</div></div>", unsafe_allow_html=True)
 
 
 
