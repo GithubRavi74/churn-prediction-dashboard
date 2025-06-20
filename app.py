@@ -80,7 +80,7 @@ with col2:
             </style>
             <div class='box'>
                 <h5 style='color:green; font-size:18px; font-weight:bold;'>
-                    SELECT YOUR FILE FOR UPLOAD 👇
+                    SELECT FILE FOR UPLOAD 👇
                 </h5>
             </div>
             """,
