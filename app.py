@@ -10,8 +10,8 @@ model = joblib.load("churn-model.pkl")
 
 st.set_page_config(page_title="NTTIS Customer Churn Prediction AI solution", layout="wide")
 st.title("📊 NTTIS Customer Churn Prediction AI solution")
-# st.markdown("Upload customer data and predict churn risk instantly.")
-st.info(" Please upload a CSV file to begin.")
+st.markdown("Please upload a data file in CSV format to begin")
+ 
 
 
 # Load and display a few rows of the sample dataset
@@ -36,7 +36,7 @@ sample_df = load_sample_data()
 
 ######################################################################
 # USE THIS CODE IF THE SAMPLE DATA NEEDS TO BE SHOWN AS PULL DOWN MENU
-with st.expander("📄 Pull down to see the sample Data format that you need to follow when uploading your csv"):
+with st.expander("📄 Click here to see the sample Data format that you need to follow when uploading your csv"):
     st.dataframe(sample_df)
     st.write("Upload Your Data similar to the above format")
 ###########################################################
