@@ -58,36 +58,34 @@ with st.expander("📄 Click here to see the data format that you need to follow
 # The "Drag and drop" text appears on the left; the Browse button on the right — taking the entire row width.
 # if you want the button to appear in center use this code
 
-# Add some spacing
-st.markdown("<br>", unsafe_allow_html=True)
+# Add CSS to style entire section
+st.markdown(
+    """
+    <style>
+    .upload-section {
+        border: 2px solid #4CAF50;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-# Use columns to center the entire box
+# Center the box
 col1, col2, col3 = st.columns([1, 2, 1])
 
 with col2:
     with st.container():
-        # Draw the box background using Streamlit container + CSS
-        st.markdown(
-            """
-            <style>
-            .box {
-                border: 2px solid #4CAF50;
-                padding: 20px;
-                border-radius: 10px;
-                background-color: #f9f9f9;
-                text-align: center;
-            }
-            </style>
-            <div class='box'>
-                <h5 style='color:green; font-size:18px; font-weight:bold;'>
-                    SELECT FILE FOR UPLOAD 👇
-                </h5>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        # Now place the uploader right below — not inside the HTML div
+        # Wrap entire section in container + CSS
+        with st.markdown('<div class="upload-section">', unsafe_allow_html=True):
+            st.markdown(
+                "### SELECT YOUR FILE FOR UPLOAD 👇",
+                unsafe_allow_html=True
+            )
         uploaded_file = st.file_uploader("", type=["csv"])
 
 if uploaded_file:
