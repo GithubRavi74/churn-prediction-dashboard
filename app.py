@@ -141,4 +141,4 @@ else:
     st.markdown("---")
 
 st.markdown("---")
-st.caption("Made with ❤️ using Streamlit")
+st.caption("AN NTTIS AI SOLUTION")
