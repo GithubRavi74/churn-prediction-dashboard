@@ -9,7 +9,7 @@ import shap
 model = joblib.load("churn-model.pkl")
 
 st.set_page_config(page_title="Geetesh's Customer Churn Prediction AI solution", layout="wide")
-st.title("📊 Geetesh's Customer Churn Prediction AI solution")
+st.title("📊 NTTIS Customer Churn Prediction AI solution")
 st.markdown("Upload customer data and predict churn risk instantly.")
 
 st.sidebar.header("📄 Sample Data format that you need to follow when uploading your csv")
