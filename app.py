@@ -66,7 +66,10 @@ if uploaded_file is not None:
 
             # Simulate predictions (replace with real model output)
             import numpy as np
-            user_df["Churn_Prediction"] = np.random.choice(["Yes", "No"], size=len(user_df))
+            # Assuming you have a trained model named `model`
+            # And you’ve already preprocessed user_df accordingly
+            preds = model.predict(user_df)
+            user_df["Churn_Prediction"] = preds
 
             # Download Button
             csv = user_df.to_csv(index=False).encode("utf-8")
