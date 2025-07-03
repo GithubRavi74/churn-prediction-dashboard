@@ -16,7 +16,7 @@ sample_df = load_sample_data()
 st.markdown(
     """
     <h2 style='text-align: center; color: #1F77B4;'>
-        📂 Customer Churn Prediction Dashboard
+        📂 NTTIS AI Solution - Customer Churn Prediction Dashboard
     </h2>
     """,
     unsafe_allow_html=True
