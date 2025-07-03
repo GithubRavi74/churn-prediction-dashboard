@@ -60,7 +60,7 @@ if uploaded_file is not None:
         st.dataframe(user_df.head(5))
 
         # ---------- Run Prediction Button ----------
-                if st.button("🚀 Run Prediction & Show Summary"):
+        if st.button("🚀 Run Prediction & Show Summary"):
             st.markdown("## 📈 Summary Statistics")
             st.dataframe(user_df.describe())
 
