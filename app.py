@@ -60,11 +60,25 @@ if uploaded_file is not None:
         st.dataframe(user_df.head(5))
 
         # ---------- Run Prediction Button ----------
-        if st.button("🚀 Run Prediction & Show Summary"):
+                if st.button("🚀 Run Prediction & Show Summary"):
             st.markdown("## 📈 Summary Statistics")
             st.dataframe(user_df.describe())
 
-            # Show bar charts for categorical columns
+            # Simulate predictions (replace with real model output)
+            import numpy as np
+            user_df["Churn_Prediction"] = np.random.choice(["Yes", "No"], size=len(user_df))
+
+            # Download Button
+            csv = user_df.to_csv(index=False).encode("utf-8")
+            st.download_button(
+                label="⬇️ Download Predictions as CSV",
+                data=csv,
+                file_name="churn_predictions.csv",
+                mime="text/csv",
+                help="Download your file with Churn Predictions"
+            )
+
+            # Categorical plots
             cat_cols = user_df.select_dtypes(include="object").columns.tolist()
             num_cols = user_df.select_dtypes(include=["int", "float"]).columns.tolist()
 
@@ -82,6 +96,7 @@ if uploaded_file is not None:
                     user_df[col].hist(bins=20, edgecolor="black", ax=ax)
                     ax.set_title(f"Histogram of {col}")
                     st.pyplot(fig)
+
 
     except Exception as e:
         st.error("❌ Error reading file. Please upload a valid CSV.")
