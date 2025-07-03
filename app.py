@@ -1,6 +1,15 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import joblib
+import numpy as np
+from sklearn.preprocessing import LabelEncoder
+
+@st.cache_resource
+def load_model():
+    return joblib.load("churn-model.pkl")  # Adjust path if needed
+
+model = load_model()
 
 # ---------- Load Sample Data ----------
 @st.cache_data
@@ -64,24 +73,38 @@ if uploaded_file is not None:
             st.markdown("## 📈 Summary Statistics")
             st.dataframe(user_df.describe())
 
-            # Simulate predictions (replace with real model output)
-            import numpy as np
-            # Assuming you have a trained model named `model`
-            # And you’ve already preprocessed user_df accordingly
-            preds = model.predict(user_df)
-            user_df["Churn_Prediction"] = preds
+            # --- Preprocessing before prediction ---
+            df_pred = user_df.copy()
 
-            # Download Button
-            csv = user_df.to_csv(index=False).encode("utf-8")
-            st.download_button(
-                label="⬇️ Download Predictions as CSV",
-                data=csv,
-                file_name="churn_predictions.csv",
-                mime="text/csv",
-                help="Download your file with Churn Predictions"
-            )
+            # Encode categorical variables (same as training)
+            for col in df_pred.select_dtypes(include="object").columns:
+                le = LabelEncoder()
+                try:
+                    df_pred[col] = le.fit_transform(df_pred[col].astype(str))
+                except:
+                    st.warning(f"⚠️ Could not encode column: {col}")
 
-            # Categorical plots
+            # --- Predict with real model ---
+            try:
+                predictions = model.predict(df_pred)
+                user_df["Churn_Prediction"] = predictions
+                st.success("✅ Predictions generated!")
+
+                # Download button
+                csv = user_df.to_csv(index=False).encode("utf-8")
+                st.download_button(
+                    label="⬇️ Download Predictions as CSV",
+                    data=csv,
+                    file_name="churn_predictions.csv",
+                    mime="text/csv",
+                    help="Download your predictions file"
+                )
+
+            except Exception as e:
+                st.error("❌ Prediction failed. Check if columns match model input.")
+                st.exception(e)
+
+            # --- Optional Plots ---
             cat_cols = user_df.select_dtypes(include="object").columns.tolist()
             num_cols = user_df.select_dtypes(include=["int", "float"]).columns.tolist()
 
@@ -101,6 +124,7 @@ if uploaded_file is not None:
                     st.pyplot(fig)
 
 
+
     except Exception as e:
         st.error("❌ Error reading file. Please upload a valid CSV.")
         st.exception(e)
@@ -118,7 +142,7 @@ else:
 st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown(
     "<div style='text-align: center; color: grey; font-size: 14px;'>"
-    "Developed with ❤️ using Streamlit | Max file size: 200MB"
+    "Developed at NTTIS  | Max file size: 200MB"
     "</div>",
     unsafe_allow_html=True
 )
