@@ -5,7 +5,22 @@ import joblib
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 
+# ---------- Page Title ----------
+st.markdown(
+    """
+    <h2 style='text-align: center; color: #1F77B4;'>
+        📂 NTTIS AI Solution - Customer Churn Prediction Dashboard
+    </h2>
+    """,
+    unsafe_allow_html=True
+)
+st.markdown("<br>", unsafe_allow_html=True)
+
+
+#Streamlit decorator used to cache expensive resources like-Database connections,ML model loading,API clients,Heavy libraries or tools.
+#This allows those resources to load once and persist across reruns, making your app faster and more efficient.
 @st.cache_resource
+
 def load_model():
     return joblib.load("churn-model.pkl")  # Adjust path if needed
 
@@ -20,7 +35,9 @@ def load_sample_data():
     return df.head(5)
 
 sample_df = load_sample_data()
-#--------------Preview start ------
+
+
+#--------------Preview sample data ------
 with st.expander("📄 Sample Data Format (for your CSV upload)"):
         st.markdown(
             "<div style='color:#1F77B4; font-size:18px; font-weight:bold; margin-bottom:10px;'>📊 Sample Format Preview</div>",
@@ -29,16 +46,7 @@ with st.expander("📄 Sample Data Format (for your CSV upload)"):
         st.dataframe(sample_df)
   #--------------Preview end ------  
 
-# ---------- Page Title ----------
-st.markdown(
-    """
-    <h2 style='text-align: center; color: #1F77B4;'>
-        📂 NTTIS AI Solution - Customer Churn Prediction Dashboard
-    </h2>
-    """,
-    unsafe_allow_html=True
-)
-st.markdown("<br>", unsafe_allow_html=True)
+
 
 # ---------- Upload Box ----------
 col1, col2, col3 = st.columns([1, 2, 1])
@@ -138,13 +146,7 @@ if uploaded_file is not None:
         st.exception(e)
 
 # ---------- Fallback Sample Format ----------
-else:
-    with st.expander("📄 Sample Data Format (for your CSV upload)"):
-        st.markdown(
-            "<div style='color:#1F77B4; font-size:18px; font-weight:bold; margin-bottom:10px;'>📊 Sample Format Preview</div>",
-            unsafe_allow_html=True
-        )
-        st.dataframe(sample_df)
+
 
 # ---------- Footer ----------
 st.markdown("<hr>", unsafe_allow_html=True)
