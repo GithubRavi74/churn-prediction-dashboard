@@ -20,6 +20,14 @@ def load_sample_data():
     return df.head(5)
 
 sample_df = load_sample_data()
+#--------------Preview start ------
+with st.expander("📄 Sample Data Format (for your CSV upload)"):
+        st.markdown(
+            "<div style='color:#1F77B4; font-size:18px; font-weight:bold; margin-bottom:10px;'>📊 Sample Format Preview</div>",
+            unsafe_allow_html=True
+        )
+        st.dataframe(sample_df)
+  #--------------Preview end ------  
 
 # ---------- Page Title ----------
 st.markdown(
