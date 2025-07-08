@@ -3,6 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import joblib
 import numpy as np
+import cloudpickle
+
+
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
@@ -27,10 +30,13 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 @st.cache_resource
 
-def load_model():
-    return joblib.load("churn_pipeline.pkl")  # Adjust path if needed
-model = load_model()
- 
+# Commentig joblib and using cloudpickle instead since job lib has some import issues in streamlit
+#def load_model():
+    #return joblib.load("churn_pipeline.pkl")  # Adjust path if needed
+#model = load_model()
+
+with open("churn_pipeline.pkl", "rb") as f:
+    model = cloudpickle.load(f)
 
 # ---------- Load Sample Data ----------
 @st.cache_data
