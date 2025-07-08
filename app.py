@@ -9,7 +9,7 @@ from sklearn.preprocessing import LabelEncoder
 st.markdown(
     """
     <h2 style='text-align: center; color: #1F77B4;'>
-        📂 NTTIS AI Solution - Customer Churn Prediction Dashboard
+        📂 THE NEW NTTIS AI Solution - Customer Churn Prediction Dashboard
     </h2>
     """,
     unsafe_allow_html=True
