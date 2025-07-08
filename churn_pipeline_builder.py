@@ -13,7 +13,7 @@ df.drop('customerID', axis=1, inplace=True)
 
 # Convert TotalCharges to numeric and fill NA
 df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
-df['TotalCharges'].fillna(df['TotalCharges'].median(), inplace=True)
+df['TotalCharges'] = df['TotalCharges'].fillna(df['TotalCharges'].median())
 
 # Map target variable
 df['Churn'] = df['Churn'].map({'Yes': 1, 'No': 0})
