@@ -35,8 +35,11 @@ st.markdown("<br>", unsafe_allow_html=True)
     #return joblib.load("churn_pipeline.pkl")  # Adjust path if needed
 #model = load_model()
 
-with open("churn_pipeline.pkl", "rb") as f:
-    model = cloudpickle.load(f)
+def load_model():
+    with open("churn_pipeline.pkl", "rb") as f:
+        return cloudpickle.load(f)
+
+model = load_model()
 
 # ---------- Load Sample Data ----------
 @st.cache_data
