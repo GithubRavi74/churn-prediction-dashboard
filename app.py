@@ -4,6 +4,11 @@ import matplotlib.pyplot as plt
 import joblib
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import LabelEncoder, OrdinalEncoder
+from xgboost import XGBClassifier
 
 # ---------- Page Title ----------
 st.markdown(
@@ -25,6 +30,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 def load_model():
     return joblib.load("churn_pipeline.pkl")  # Adjust path if needed
 model = load_model()
+ 
 
 # ---------- Load Sample Data ----------
 @st.cache_data
