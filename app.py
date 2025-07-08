@@ -35,11 +35,21 @@ st.markdown("<br>", unsafe_allow_html=True)
     #return joblib.load("churn_pipeline.pkl")  # Adjust path if needed
 #model = load_model()
 
-def load_model():
-    with open("churn_pipeline.pkl", "rb") as f:
-        return cloudpickle.load(f)
 
-model = load_model()
+
+############################################################
+def load_model():
+    try:
+        with open("churn_pipeline.pkl", "rb") as f:
+            return cloudpickle.load(f)
+    except Exception as e:
+        st.error(f"❌ Error loading model: {type(e).__name__}: {e}")
+        raise
+
+###########################################################
+
+
+
 
 # ---------- Load Sample Data ----------
 @st.cache_data
