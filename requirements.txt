@@ -7,3 +7,4 @@ seaborn
 xgboost
 shap
 ipython
+cloudpickle
