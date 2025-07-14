@@ -90,8 +90,25 @@ if uploaded_file is not None:
 
         # ---------- Run Prediction Button ----------
         if st.button("🚀 Run Prediction & Show Summary"):
-            st.markdown("## 📈 Summary Statistics")
-            st.dataframe(user_df.describe())
+            # INSTEAD OF BELOW 2 STREAMLIT APPROACH , BOXPLOT IS USED
+            #st.markdown("## 📈 Summary Statistics")
+            #st.dataframe(user_df.describe())
+            st.markdown("## 📈 Overview of uploaded data- A Numerical Insight")
+            view_option = st.radio(
+            "Choose how to view numerical insights:",
+            ('Summary Table', 'Box Plots')
+            )
+            num_cols = user_df.select_dtypes(include=["int", "float"]).columns.tolist()
+
+            if view_option == 'Summary Table':
+                st.dataframe(user_df[num_cols].describe().T)
+            else:
+                st.write("### Box Plots for Numerical Features")
+                for col in num_cols:
+                fig, ax = plt.subplots()
+                user_df.boxplot(column=col, ax=ax)
+                ax.set_title(f'Boxplot of {col}')
+                st.pyplot(fig)
 
             # --- Predict with real model ---
             try:
