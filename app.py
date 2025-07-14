@@ -88,7 +88,16 @@ if uploaded_file is not None:
         st.dataframe(user_df.head(5))
 
         # ---------- Run Prediction Button ----------
+        #if st.button("🚀 Run Prediction & Show Summary"):
+
+        if "run_pred" not in st.session_state:
+            st.session_state.run_pred = False
+
         if st.button("🚀 Run Prediction & Show Summary"):
+            st.session_state.run_pred = True
+
+        if st.session_state.run_pred:
+    
             st.markdown("## 📈 Overview of uploaded data- A Numerical Insight")
             view_option = st.radio(
                 "Choose how to view numerical insights:",
