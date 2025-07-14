@@ -105,10 +105,10 @@ if uploaded_file is not None:
             else:
                 st.write("### Box Plots for Numerical Features")
                 for col in num_cols:
-                fig, ax = plt.subplots()
-                user_df.boxplot(column=col, ax=ax)
-                ax.set_title(f'Boxplot of {col}')
-                st.pyplot(fig)
+                    fig, ax = plt.subplots()
+                    user_df.boxplot(column=col, ax=ax)
+                    ax.set_title(f'Boxplot of {col}')
+                    st.pyplot(fig)
 
             # --- Predict with real model ---
             try:
