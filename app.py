@@ -1,10 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import joblib
-import numpy as np
 import cloudpickle
-
 
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
@@ -24,20 +21,7 @@ st.markdown(
 )
 st.markdown("<br>", unsafe_allow_html=True)
 
-
-#Streamlit decorator used to cache expensive resources like-Database connections,ML model loading,API clients,Heavy libraries or tools.
-#This allows those resources to load once and persist across reruns, making your app faster and more efficient.
-
 @st.cache_resource
-
-# Commentig joblib and using cloudpickle instead since job lib has some import issues in streamlit
-#def load_model():
-    #return joblib.load("churn_pipeline.pkl")  # Adjust path if needed
-#model = load_model()
-
-
-
-############################################################
 def load_model():
     try:
         with open("churn_pipeline.pkl", "rb") as f:
@@ -46,10 +30,7 @@ def load_model():
         st.error(f"❌ Error loading model: {type(e).__name__}: {e}")
         raise
 
-###########################################################
-
 model = load_model()
-
 
 # ---------- Load Sample Data ----------
 @st.cache_data
@@ -61,17 +42,13 @@ def load_sample_data():
 
 sample_df = load_sample_data()
 
-
 #--------------Preview sample data ------
 with st.expander("📄 Sample Data Format (for your CSV upload)"):
-        st.markdown(
-            "<div style='color:#1F77B4; font-size:18px; font-weight:bold; margin-bottom:10px;'>📊 Sample Format Preview</div>",
-            unsafe_allow_html=True
-        )
-        st.dataframe(sample_df)
-  #--------------Preview end ------  
-
-
+    st.markdown(
+        "<div style='color:#1F77B4; font-size:18px; font-weight:bold; margin-bottom:10px;'>📊 Sample Format Preview</div>",
+        unsafe_allow_html=True
+    )
+    st.dataframe(sample_df)
 
 # ---------- Upload Box ----------
 col1, col2, col3 = st.columns([1, 2, 1])
@@ -103,7 +80,6 @@ if uploaded_file is not None:
     try:
         user_df = pd.read_csv(uploaded_file)
         df_pred = user_df.copy()
-     
         if "customerID" in user_df.columns:
             user_df.drop("customerID", axis=1, inplace=True)
 
@@ -113,13 +89,26 @@ if uploaded_file is not None:
 
         # ---------- Run Prediction Button ----------
         if st.button("🚀 Run Prediction & Show Summary"):
-            st.markdown("## 📈 Summary Statistics")
-            st.dataframe(user_df.describe())
+            st.markdown("## 📈 Overview of uploaded data- A Numerical Insight")
+            view_option = st.radio(
+                "Choose how to view numerical insights:",
+                ('Summary Table', 'Box Plots')
+            )
 
-            
+            num_cols = user_df.select_dtypes(include=["int", "float"]).columns.tolist()
+
+            if view_option == 'Summary Table':
+                st.dataframe(user_df[num_cols].describe().T)
+            else:
+                st.write("### Box Plots for Numerical Features")
+                for col in num_cols:
+                    fig, ax = plt.subplots()
+                    user_df.boxplot(column=col, ax=ax)
+                    ax.set_title(f'Boxplot of {col}')
+                    st.pyplot(fig)
+
             # --- Predict with real model ---
             try:
-                
                 predictions = model.predict(df_pred)
                 user_df["Churn_Prediction"] = predictions
                 st.success("✅ Predictions generated!")
@@ -157,14 +146,39 @@ if uploaded_file is not None:
                     ax.set_title(f"Histogram of {col}")
                     st.pyplot(fig)
 
+            # ---------- Churn Distribution ----------
+            if "Churn_Prediction" in user_df.columns:
+                st.markdown("## 📌 Churn Prediction Summary")
+                churn_counts = user_df["Churn_Prediction"].value_counts().rename(index={0: "No Churn", 1: "Churn"})
+                st.bar_chart(churn_counts)
 
+                # MonthlyCharges vs Churn
+                if "MonthlyCharges" in user_df.columns:
+                    st.markdown("### 📊 MonthlyCharges by Churn")
+                    fig1, ax1 = plt.subplots()
+                    for label, group in user_df.groupby("Churn_Prediction"):
+                        ax1.hist(group["MonthlyCharges"], bins=30, alpha=0.5, label=f"{'Churn' if label==1 else 'No Churn'}", edgecolor='black')
+                    ax1.set_xlabel("MonthlyCharges")
+                    ax1.set_ylabel("Count")
+                    ax1.set_title("MonthlyCharges Distribution by Churn")
+                    ax1.legend()
+                    st.pyplot(fig1)
+
+                # Tenure vs Churn
+                if "tenure" in user_df.columns:
+                    st.markdown("### 📊 Tenure by Churn")
+                    fig2, ax2 = plt.subplots()
+                    for label, group in user_df.groupby("Churn_Prediction"):
+                        ax2.hist(group["tenure"], bins=30, alpha=0.5, label=f"{'Churn' if label==1 else 'No Churn'}", edgecolor='black')
+                    ax2.set_xlabel("Tenure (Months)")
+                    ax2.set_ylabel("Count")
+                    ax2.set_title("Tenure Distribution by Churn")
+                    ax2.legend()
+                    st.pyplot(fig2)
 
     except Exception as e:
         st.error("❌ Error reading file. Please upload a valid CSV.")
         st.exception(e)
-
-# ---------- Fallback Sample Format ----------
-
 
 # ---------- Footer ----------
 st.markdown("<hr>", unsafe_allow_html=True)
