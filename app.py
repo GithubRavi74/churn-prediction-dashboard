@@ -158,7 +158,8 @@ if uploaded_file is not None:
                     ax.set_ylabel("Count")
                     ax.set_title(f"Distribution of {col}")
                     st.pyplot(fig)
-
+                st.markdown("<br>", unsafe_allow_html=True)
+                st.markdown("<br>", unsafe_allow_html=True)
                 #SEABORN VISUALIZATION
                 import seaborn as sns
                 for col in cat_cols:
