@@ -166,7 +166,8 @@ if uploaded_file is not None:
                     st.markdown(f"**{col}**")
                     fig, ax = plt.subplots(figsize=(2, 1))
                     sns.countplot(x=col, data=user_df, ax=ax, width=0.2)  # width < 1 for thinner bars
-                    ax.set_title(f"Distribution of {col}")
+                    #ax.set_title(f"Distribution of {col}")
+                    ax.set_title(f"Distribution of {col}", fontsize=8)
                     st.pyplot(fig)
 
 
