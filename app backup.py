@@ -80,7 +80,6 @@ if uploaded_file is not None:
     try:
         user_df = pd.read_csv(uploaded_file)
         df_pred = user_df.copy()
-        
         if "customerID" in user_df.columns:
             user_df.drop("customerID", axis=1, inplace=True)
 
@@ -89,28 +88,33 @@ if uploaded_file is not None:
         st.dataframe(user_df.head(5))
 
         # ---------- Run Prediction Button ----------
+        #if st.button("🚀 Run Prediction & Show Summary"):
+
+        if "run_pred" not in st.session_state:
+            st.session_state.run_pred = False
+
         if st.button("🚀 Run Prediction & Show Summary"):
-            # INSTEAD OF BELOW 2 STREAMLIT APPROACH , BOXPLOT IS USED
-            #st.markdown("## 📈 Summary Statistics")
-            #st.dataframe(user_df.describe())
+            st.session_state.run_pred = True
+
+        if st.session_state.run_pred:
+    
             st.markdown("## 📈 Overview of uploaded data- A Numerical Insight")
             view_option = st.radio(
-    "Choose how to view numerical insights:",
-    ('Summary Table', 'Box Plots')
-)
+                "Choose how to view numerical insights:",
+                ('Summary Table', 'Box Plots')
+            )
 
-num_cols = user_df.select_dtypes(include=["int", "float"]).columns.tolist()
+            num_cols = user_df.select_dtypes(include=["int", "float"]).columns.tolist()
 
-if view_option == 'Summary Table':
-    st.dataframe(user_df[num_cols].describe().T)
-else:
-    st.write("### Box Plots for Numerical Features")
-    for col in num_cols:
-        fig, ax = plt.subplots()
-        user_df.boxplot(column=col, ax=ax)
-        ax.set_title(f'Boxplot of {col}')
-        st.pyplot(fig)
-
+            if view_option == 'Summary Table':
+                st.dataframe(user_df[num_cols].describe().T)
+            else:
+                st.write("### Box Plots for Numerical Features")
+                for col in num_cols:
+                    fig, ax = plt.subplots()
+                    user_df.boxplot(column=col, ax=ax)
+                    ax.set_title(f'Boxplot of {col}')
+                    st.pyplot(fig)
 
             # --- Predict with real model ---
             try:
