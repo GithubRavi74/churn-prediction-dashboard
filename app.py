@@ -142,11 +142,13 @@ if uploaded_file is not None:
 
             if cat_cols:
                 st.markdown("### 📊 Categorical Feature DistributionsXXX")
+                #COMMENTING TEMPORARILY THE STREAMLIT VISUALIZATIONS FOR CATEGORICAL FEATURE DISTRIBUTION
                 #for col in cat_cols:
                     #st.markdown(f"**{col}**")
                     #st.bar_chart(user_df[col].value_counts())
+                
+                #MATPLOTLIB VISUALIZATION
                 import matplotlib.pyplot as plt
-
                 for col in cat_cols:
                     st.markdown(f"**{col}**")
                     fig, ax = plt.subplots(figsize=(4, 3))  # Control figure size
@@ -156,6 +158,17 @@ if uploaded_file is not None:
                     ax.set_ylabel("Count")
                     ax.set_title(f"Distribution of {col}")
                     st.pyplot(fig)
+
+                #SEABORN VISUALIZATION
+                import seaborn as sns
+                for col in cat_cols:
+                    st.markdown(f"**{col}**")
+                    fig, ax = plt.subplots(figsize=(4, 3))
+                    sns.countplot(x=col, data=user_df, ax=ax, width=0.4)  # width < 1 for thinner bars
+                    ax.set_title(f"Distribution of {col}")
+                    st.pyplot(fig)
+
+
 
 
             if num_cols:
