@@ -141,11 +141,11 @@ if uploaded_file is not None:
             num_cols = user_df.select_dtypes(include=["int", "float"]).columns.tolist()
 
             if cat_cols:
-                st.markdown("### 📊 Categorical Feature Distributions")
+                st.markdown("### 📊 Categorical Feature DistributionsXXX")
                 #for col in cat_cols:
                     #st.markdown(f"**{col}**")
                     #st.bar_chart(user_df[col].value_counts())
-            import matplotlib.pyplot as plt
+                import matplotlib.pyplot as plt
 
                 for col in cat_cols:
                     st.markdown(f"**{col}**")
