@@ -142,9 +142,21 @@ if uploaded_file is not None:
 
             if cat_cols:
                 st.markdown("### 📊 Categorical Feature Distributions")
+                #for col in cat_cols:
+                    #st.markdown(f"**{col}**")
+                    #st.bar_chart(user_df[col].value_counts())
+            import matplotlib.pyplot as plt
+
                 for col in cat_cols:
                     st.markdown(f"**{col}**")
-                    st.bar_chart(user_df[col].value_counts())
+                    fig, ax = plt.subplots(figsize=(4, 3))  # Control figure size
+                    value_counts = user_df[col].value_counts()
+                    ax.bar(value_counts.index, value_counts.values, width=0.4)  # Set bar width < 1
+                    ax.set_xlabel(col)
+                    ax.set_ylabel("Count")
+                    ax.set_title(f"Distribution of {col}")
+                    st.pyplot(fig)
+
 
             if num_cols:
                 st.markdown("### 📉 Numerical Feature Distributions")
