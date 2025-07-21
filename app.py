@@ -45,6 +45,8 @@ if selected_tab == "Upload & Predict":
         st.session_state["churn_predictions_df"] = user_df
         st.write("Predictions:")
         st.dataframe(user_df[["customerID", "Churn", "Churn_Probability"]])
+        # Save to session state
+        st.session_state.churn_predictions_df = user_df
 elif selected_tab == "Visualizations":
     st.subheader("📊 Churn Distribution Visualization")
 
