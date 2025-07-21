@@ -101,10 +101,6 @@ elif selected_tab == "Chat with Agent":
     st.title("🤖 Chat with Agent")
     st.markdown("The agent will respond based on your churn profile.")
 
-    elif selected_tab == "Chat with Agent":
-    st.title("🤖 Chat with Agent")
-    st.markdown("The agent will respond based on your churn profile.")
-
     # Ensure previous predictions are available
     if st.session_state.churn_predictions_df.empty:
         st.warning("Please upload and predict data in the 'Upload & Predict' tab first.")
