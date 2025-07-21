@@ -27,22 +27,24 @@ if "churn_predictions_df" not in st.session_state:
 
 if selected_tab == "Upload & Predict":
     st.subheader("📤 Upload Customer Data (CSV)")
-    uploaded_file = st.file_uploader("Upload your input CSV file", type=["csv"])
+    #####################
+    uploaded_file = st.file_uploader("Upload a CSV file for prediction", type=["csv"])
 
-    if uploaded_file is not None:
-        input_df = pd.read_csv(uploaded_file)
-        st.write("### Sample Data", input_df.head())
-
+    if uploaded_file:
+        user_df = pd.read_csv(uploaded_file)
+        user_df.columns = user_df.columns.map(str).str.strip()
+        st.session_state["uploaded_df"] = user_df
+        st.write("Sample of uploaded data:")
+        st.dataframe(user_df.head())
+        
         # Predict churn
-        predictions = pipeline.predict(input_df)
-        input_df["churn_prediction"] = np.where(predictions == 1, "Churn", "No Churn")
-
-        st.write("### Prediction Results")
-        st.dataframe(input_df)
-
-        # Save to session state
-        st.session_state.churn_predictions_df = input_df
-
+        churn_predictions = pipeline.predict(user_df)
+        churn_proba = pipeline.predict_proba(user_df)[:, 1]
+        user_df["Churn"] = churn_predictions
+        user_df["Churn_Probability"] = churn_proba
+        st.session_state["churn_predictions_df"] = user_df
+        st.write("Predictions:")
+        st.dataframe(user_df[["customerID", "Churn", "Churn_Probability"]])
 elif selected_tab == "Visualizations":
     st.subheader("📊 Churn Distribution Visualization")
 
