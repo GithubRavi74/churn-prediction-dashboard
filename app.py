@@ -108,9 +108,9 @@ elif selected_tab == "Chat with Agent":
         churn_predictions_df = st.session_state.churn_predictions_df.copy()
 
         # Ensure columns are clean
-        churn_predictions_df.columns = churn_predictions_df.columns.str.strip()
+        churn_predictions_df.columns = churn_predictions_df.columns.map(str).str.strip()
         churn_predictions_df["customerID"] = churn_predictions_df["customerID"].astype(str).str.strip()
-
+       
         # Step 1: Select customer
         customer_id = st.selectbox("Select a Customer ID", churn_predictions_df["customerID"].unique())
         customer_id = str(customer_id).strip()
