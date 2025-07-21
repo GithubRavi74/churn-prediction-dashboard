@@ -109,8 +109,19 @@ elif selected_tab == "Chat with Agent":
         customer_id = st.selectbox("Select a Customer ID", churn_predictions_df["customerID"].unique())
     
         # Step 2: Show prediction info
+        # Strip spaces and ensure both are string for matching
+        churn_predictions_df["customerID"] = churn_predictions_df["customerID"].astype(str).str.strip()
+        customer_id = str(customer_id).strip()
+
         customer_data = churn_predictions_df[churn_predictions_df["customerID"] == customer_id]
-        predicted_churn = customer_data["Churn"].values[0]
+
+        if not customer_data.empty:
+            predicted_churn = customer_data["Churn"].values[0]
+            st.write(f"**Churn Prediction for {customer_id}:** `{predicted_churn}`")
+        else:
+            st.error("No customer data found. Please check the selected customer ID.")
+            predicted_churn = None
+
         st.write(f"**Churn Prediction for {customer_id}:** `{predicted_churn}`")
 
         # Step 3: Enter a message
