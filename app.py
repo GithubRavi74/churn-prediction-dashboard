@@ -99,40 +99,47 @@ elif selected_tab == "Churn Summary":
 
 elif selected_tab == "Chat with Agent":
     st.title("🤖 Chat with Agent")
-
     st.markdown("Ask any question or type your concerns as a customer. The agent will respond based on your churn profile.")
 
     if st.session_state.churn_predictions_df.empty:
         st.warning("Please upload and predict data in the 'Upload & Predict' tab first.")
     else:
         churn_predictions_df = st.session_state.churn_predictions_df
-        #st.write("Available columns:", churn_predictions_df.columns.tolist())
-        #st.dataframe(churn_predictions_df.head())
+        # Step 1: Choose customer
         customer_id = st.selectbox("Select a Customer ID", churn_predictions_df["customerID"].unique())
-        customer_row = churn_predictions_df[churn_predictions_df["customerID"] == customer_id].iloc[0]
+    
+        # Step 2: Show prediction info
+        customer_data = churn_predictions_df[churn_predictions_df["customerID"] == customer_id]
+        predicted_churn = customer_data["Churn"].values[0]
+        st.write(f"**Churn Prediction for {customer_id}:** `{predicted_churn}`")
 
-        if "chat_history" not in st.session_state:
-            st.session_state.chat_history = []
+        # Step 3: Enter a message
+        user_input = st.text_input("You", placeholder="Type your issue or concern here...")
 
-        user_input = st.text_input("You:", key="chat_input")
-
-        if user_input:
-            st.session_state.chat_history.append(("user", user_input))
-
-            if customer_row["churn_prediction"] == "Churn":
-                st.markdown("YES ITS CHURN")
-                if "price" in user_input.lower():
-                    st.markdown("YES ITS PRICE")
-                    agent_reply = "It seems pricing might be a concern. Would a discount or better plan suit you?"
-                elif "why" in user_input.lower() or "reason" in user_input.lower():
-                    agent_reply = f"Our model identified contract type and tenure as churn indicators. We’d love to keep you with a new offer."
-                else:
-                    agent_reply = "We understand your concerns. Let me check how we can retain you with a personalized offer."
+        # Step 4: Generate response
+        def retention_response(message):
+            if "cancel" in message.lower():
+                return "We’re sorry to hear that. Can we offer a 10% discount to retain you?"
+            elif "price" in message.lower() or "bill" in message.lower():
+                return "We understand billing concerns. We can offer a flexible plan with no extra charges."
+            elif "speed" in message.lower():
+                return "We’re actively upgrading speed in your area. We can send a free technician visit."
+            elif "service" in message.lower() or "issue" in message.lower():
+                return "We're sorry for the inconvenience. Our support team can prioritize your case now."
+            elif "switch" in message.lower() or "competitor" in message.lower():
+                return "Loyal customers get 2 months free! Would that help you stay with us?"
             else:
-                agent_reply = "You're a valued customer with no signs of churn. Is there anything else I can help you with?"
+                return "Thank you for reaching out. We’ll have our agent get in touch shortly."
 
-            st.session_state.chat_history.append(("agent", agent_reply))
+        # Step 5: Show agent reply
+        if user_input:
+            if predicted_churn == "Yes":
+                reply = retention_response(user_input)
+            else:
+                reply = "You're a valued customer with no signs of churn. Is there anything else I can help you with?"
 
+        st.markdown(f"**Agent:** {reply}")
+        ######################
         for sender, msg in st.session_state.chat_history:
             if sender == "user":
                 st.markdown(f"👤 **You**: {msg}")
