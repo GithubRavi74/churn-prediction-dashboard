@@ -13,10 +13,10 @@ with open("churn_pipeline.pkl", "rb") as file:
 # App title
 st.set_page_config(page_title="Customer Churn Prediction", layout="wide")
 
-st.title("📉 Customer Churn Prediction Dashboard")
+st.title("📉 NTTIS AI SOLUTION - Customer Churn Prediction Dashboard")
 
 # Tabs
-tabs = ["Upload & Predict", "Visualizations", "Churn Summary", "Chat with Retention Agent"]
+tabs = ["Upload & Predict", "Visualizations", "Churn Summary", "Chat with Agent"]
 selected_tab = st.sidebar.radio("Navigate", tabs)
 
 # Initialize global DataFrame
@@ -95,8 +95,8 @@ elif selected_tab == "Churn Summary":
     else:
         st.warning("Please upload and predict data in the 'Upload & Predict' tab first.")
 
-elif selected_tab == "Chat with Retention Agent":
-    st.title("🤖 Chat with Retention Agent")
+elif selected_tab == "Chat with Agent":
+    st.title("🤖 Chat with Agent")
 
     st.markdown("Ask any question or type your concerns as a customer. The agent will respond based on your churn profile.")
 
