@@ -99,7 +99,7 @@ elif selected_tab == "Churn Summary":
 
 elif selected_tab == "Chat with Agent":
     st.title("🤖 Chat with Agent")
-    st.markdown("Ask any question or type your concerns as a customer. The agent will respond based on your churn profile.")
+    st.markdown("The agent will respond based on your churn profile.")
 
     if st.session_state.churn_predictions_df.empty:
         st.warning("Please upload and predict data in the 'Upload & Predict' tab first.")
@@ -109,13 +109,15 @@ elif selected_tab == "Chat with Agent":
         customer_id = st.selectbox("Select a Customer ID", churn_predictions_df["customerID"].unique())
     
         # Step 2: Show prediction info
-        # Strip spaces and ensure both are string for matching
+       # Clean up customerID column in case of whitespace or type issues
         churn_predictions_df["customerID"] = churn_predictions_df["customerID"].astype(str).str.strip()
         customer_id = str(customer_id).strip()
 
+        # Filter the selected customer's data
         customer_data = churn_predictions_df[churn_predictions_df["customerID"] == customer_id]
-
-        if not customer_data.empty:
+        
+        #Safely handle if customer data is not found
+        if not customer_data.empty and "Churn" in customer_data.columns:
             predicted_churn = customer_data["Churn"].values[0]
             st.write(f"**Churn Prediction for {customer_id}:** `{predicted_churn}`")
         else:
