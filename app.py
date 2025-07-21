@@ -120,7 +120,9 @@ elif selected_tab == "Chat with Agent":
             st.session_state.chat_history.append(("user", user_input))
 
             if customer_row["churn_prediction"] == "Churn":
+                st.markdown("YES ITS CHURN")
                 if "price" in user_input.lower():
+                    st.markdown("YES ITS PRICE")
                     agent_reply = "It seems pricing might be a concern. Would a discount or better plan suit you?"
                 elif "why" in user_input.lower() or "reason" in user_input.lower():
                     agent_reply = f"Our model identified contract type and tenure as churn indicators. We’d love to keep you with a new offer."
