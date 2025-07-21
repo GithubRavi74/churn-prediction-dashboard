@@ -107,78 +107,59 @@ elif selected_tab == "Chat with Agent":
     st.title("🤖 Chat with Agent")
     st.markdown("The agent will respond based on your churn profile.")
 
-    # Ensure previous predictions are available
-    if st.session_state.churn_predictions_df.empty:
-        st.warning("Please upload and predict data in the 'Upload & Predict' tab first.")
-    else:
-        churn_predictions_df = st.session_state.churn_predictions_df.copy()
+    if churn_predictions_df is not None and "customerID" in churn_predictions_df.columns:
+        churn_predictions_df.columns = churn_predictions_df.columns.str.strip()
+        customer_ids = churn_predictions_df["customerID"].unique()
+        customer_id = st.selectbox("Select a Customer ID", customer_ids)
 
-        # Ensure columns are clean
-        churn_predictions_df.columns = churn_predictions_df.columns.map(str).str.strip()
-        churn_predictions_df["customerID"] = churn_predictions_df["customerID"].astype(str).str.strip()
-       
-        # Step 1: Select customer
-        customer_id = st.selectbox("Select a Customer ID", churn_predictions_df["customerID"].unique())
-        customer_id = str(customer_id).strip()
         customer_data = churn_predictions_df[churn_predictions_df["customerID"] == customer_id]
-
-        # Step 2: Show churn prediction
+        
         if not customer_data.empty:
-            predicted_churn = customer_data["Churn"].values[0]
-            st.write(f"**Churn Prediction for {customer_id}:** `{predicted_churn}`")
+            st.write("📄 Customer Profile:")
+            st.dataframe(customer_data.T)
+
+            predicted_churn = customer_data["churn_prediction"].values[0]
+            profile_text = customer_data.drop(columns=["customerID", "churn_prediction"]).to_dict(orient="records")[0]
+
+            user_input = st.text_input("💬 You (Ask the Agent about this customer):", placeholder="Why might this customer churn?")
+            
+            if user_input:
+                with st.spinner("Generating response..."):
+                    try:
+                        import openai
+                        openai.api_key = st.secrets["OPENAI_API_KEY"]
+
+                        system_prompt = (
+                            "You are a customer retention agent. Use the customer's profile and churn prediction to offer helpful suggestions or answer queries. "
+                            "Be empathetic and analytical."
+                        )
+
+                        formatted_profile = "\n".join([f"{k}: {v}" for k, v in profile_text.items()])
+                        full_prompt = f"""
+Customer ID: {customer_id}
+Churn Prediction: {predicted_churn}
+Customer Profile:
+{formatted_profile}
+
+User Query: {user_input}
+                        """
+
+                        response = openai.ChatCompletion.create(
+                            model="gpt-4",
+                            messages=[
+                                {"role": "system", "content": system_prompt},
+                                {"role": "user", "content": full_prompt}
+                            ],
+                            temperature=0.7,
+                            max_tokens=500,
+                        )
+
+                        reply = response['choices'][0]['message']['content']
+                        st.markdown(f"**Agent:** {reply}")
+
+                    except Exception as e:
+                        st.error(f"❌ LLM Error: {str(e)}")
         else:
-            st.error("No customer data found. Please check the selected customer ID.")
-            predicted_churn = None
-
-        # Step 3: Initialize chat history if not exists
-        if "chat_history" not in st.session_state:
-            st.session_state.chat_history = []
-
-        # Step 4: User input
-        user_input = st.text_input("You", placeholder="Type your issue or concern here...")
-
-        # Step 5: Agent response
-        def retention_response(message):
-            message = message.lower()
-            if "cancel" in message:
-                return "We’re sorry to hear that. Can we offer a 10% discount to retain you?"
-            elif "price" in message or "bill" in message:
-                return "We understand billing concerns. We can offer a flexible plan with no extra charges."
-            elif "speed" in message:
-                return "We’re actively upgrading speed in your area. We can send a free technician visit."
-            elif "service" in message or "issue" in message:
-                return "We're sorry for the inconvenience. Our support team can prioritize your case now."
-            elif "switch" in message or "competitor" in message:
-                return "Loyal customers get 2 months free! Would that help you stay with us?"
-            else:
-                return "Thank you for reaching out. We’ll have our agent get in touch shortly."
-
-        if user_input:
-            st.session_state.chat_history.append(("user", user_input))
-            # commenting the hard coded approach so as to use LLM
-            #if predicted_churn == "Churn":
-            #    reply = retention_response(user_input)
-            #elif predicted_churn == "No Churn":
-            #    reply = "You're a valued customer with no signs of churn. Is there anything else I can help you with?"
-            #else:
-            #    reply = "Sorry, we could not determine the churn prediction."
-
-              
-        # Step 6: Display chat history
-        st.markdown("### 💬 Chat History")
-
-        #for sender, msg in st.session_state.chat_history:
-            #if sender == "user":
-                #st.markdown(f"👤 **You:** {msg}")
-            #else:
-                #st.markdown(f"🤖 **Agent:** {msg}")
-
-            st.session_state.chat_history.append(("agent", reply))
-            if st.button("Ask Agent"):
-                customer_data_dict = customer_data.iloc[0].to_dict()
-                reply = generate_response(customer_data_dict, user_message)
-                st.markdown(f"**Agent:** {reply}")
-
-
-        
-        
+            st.warning("Selected customer ID not found in uploaded data.")
+    else:
+        st.info("📤 Please upload and predict data first in the 'Upload & Predict' tab.")
