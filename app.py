@@ -122,7 +122,7 @@ elif selected_tab == "Chat with Agent":
 
         # Step 2: Show churn prediction
         if not customer_data.empty:
-            predicted_churn = customer_data["churn_prediction"].values[0]
+            predicted_churn = customer_data["Churn"].values[0]
             st.write(f"**Churn Prediction for {customer_id}:** `{predicted_churn}`")
         else:
             st.error("No customer data found. Please check the selected customer ID.")
