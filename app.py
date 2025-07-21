@@ -169,9 +169,4 @@ elif selected_tab == "Chat with Agent":
 
 
         
-        ######################
-        for sender, msg in st.session_state.chat_history:
-            if sender == "user":
-                st.markdown(f"👤 **You**: {msg}")
-            else:
-                st.markdown(f"🤖 **Agent**: {msg}")
+        
