@@ -22,6 +22,8 @@ selected_tab = st.sidebar.radio("Navigate", tabs)
 # Initialize global DataFrame
 if "churn_predictions_df" not in st.session_state:
     st.session_state.churn_predictions_df = pd.DataFrame()
+    churn_predictions_df.columns = churn_predictions_df.columns.str.strip()
+    churn_predictions_df.columns = churn_predictions_df.columns.str.lower()
 
 if selected_tab == "Upload & Predict":
     st.subheader("📤 Upload Customer Data (CSV)")
