@@ -104,7 +104,8 @@ elif selected_tab == "Chat with Agent":
         st.warning("Please upload and predict data in the 'Upload & Predict' tab first.")
     else:
         churn_predictions_df = st.session_state.churn_predictions_df
-
+        st.write("Available columns:", churn_predictions_df.columns.tolist())
+        st.dataframe(churn_predictions_df.head())
         customer_id = st.selectbox("Select a Customer ID", churn_predictions_df["customerID"].unique())
         customer_row = churn_predictions_df[churn_predictions_df["customerID"] == customer_id].iloc[0]
 
