@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import cloudpickle
 from sklearn.metrics import classification_report, confusion_matrix
+from churn_agent_llm import generate_response
+
 
 # Load the trained pipeline
 with open("churn_pipeline.pkl", "rb") as file:
@@ -153,23 +155,29 @@ elif selected_tab == "Chat with Agent":
 
         if user_input:
             st.session_state.chat_history.append(("user", user_input))
+            # commenting the hard coded approach so as to use LLM
+            #if predicted_churn == "Churn":
+            #    reply = retention_response(user_input)
+            #elif predicted_churn == "No Churn":
+            #    reply = "You're a valued customer with no signs of churn. Is there anything else I can help you with?"
+            #else:
+            #    reply = "Sorry, we could not determine the churn prediction."
 
-            if predicted_churn == "Churn":
-                reply = retention_response(user_input)
-            elif predicted_churn == "No Churn":
-                reply = "You're a valued customer with no signs of churn. Is there anything else I can help you with?"
-            else:
-                reply = "Sorry, we could not determine the churn prediction."
-
-            st.session_state.chat_history.append(("agent", reply))
-
+              
         # Step 6: Display chat history
         st.markdown("### 💬 Chat History")
-        for sender, msg in st.session_state.chat_history:
-            if sender == "user":
-                st.markdown(f"👤 **You:** {msg}")
-            else:
-                st.markdown(f"🤖 **Agent:** {msg}")
+
+        #for sender, msg in st.session_state.chat_history:
+            #if sender == "user":
+                #st.markdown(f"👤 **You:** {msg}")
+            #else:
+                #st.markdown(f"🤖 **Agent:** {msg}")
+
+            st.session_state.chat_history.append(("agent", reply))
+            if st.button("Ask Agent"):
+                customer_data_dict = customer_data.iloc[0].to_dict()
+                reply = generate_response(customer_data_dict, user_message)
+                st.markdown(f"**Agent:** {reply}")
 
 
         
