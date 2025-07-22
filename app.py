@@ -75,7 +75,7 @@ elif selected_tab == "Visualizations":
             st.write("### Box Plots for Numerical Features")
             for col in num_cols:
                 fig, ax = plt.subplots()
-                sns.boxplot(data=user_df, x="churn_prediction", y=col, palette="Set2", ax=ax)
+                sns.boxplot(data=user_df, x="Churn", y=col, palette="Set2", ax=ax)
                 ax.set_title(f"{col} by Churn Status", fontsize=12)
                 st.pyplot(fig)
 
@@ -105,7 +105,7 @@ elif selected_tab == "Churn Summary":
 elif selected_tab == "Chat with AI Support":
     st.title("🤖 Chat with AI Support")
     st.markdown("The agent will respond based on your churn profile.")
-
+    churn_predictions_df = st.session_state.get("churn_predictions_df", None)
     if churn_predictions_df is not None and "customerID" in churn_predictions_df.columns:
         churn_predictions_df.columns = churn_predictions_df.columns.str.strip()
         customer_ids = churn_predictions_df["customerID"].unique()
