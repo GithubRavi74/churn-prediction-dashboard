@@ -125,35 +125,8 @@ elif selected_tab == "Chat with AI Support":
             if user_input:
                 with st.spinner("Generating response..."):
                     try:
-                        import openai
-                        openai.api_key = st.secrets["OPENAI_API_KEY"]
-
-                        system_prompt = (
-                            "You are a customer retention agent. Use the customer's profile and churn prediction to offer helpful suggestions or answer queries. "
-                            "Be empathetic and analytical."
-                        )
-
-                        formatted_profile = "\n".join([f"{k}: {v}" for k, v in profile_text.items()])
-                        full_prompt = f"""
-Customer ID: {customer_id}
-Churn Prediction: {predicted_churn}
-Customer Profile:
-{formatted_profile}
-
-User Query: {user_input}
-                        """
-
-                        response = openai.ChatCompletion.create(
-                            model="gpt-4",
-                            messages=[
-                                {"role": "system", "content": system_prompt},
-                                {"role": "user", "content": full_prompt}
-                            ],
-                            temperature=0.7,
-                            max_tokens=500,
-                        )
-
-                        reply = response['choices'][0]['message']['content']
+                        customer_data_dict = customer_data.iloc[0].drop(["customerID"]).to_dict()
+                        reply = generate_response(customer_data_dict, user_input)
                         st.markdown(f"**Agent:** {reply}")
 
                     except Exception as e:
