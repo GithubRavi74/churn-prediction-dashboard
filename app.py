@@ -14,18 +14,17 @@ with open("churn_pipeline.pkl", "rb") as file:
 
 # App title
 st.set_page_config(page_title="Customer Churn Prediction", layout="wide")
-
 st.title("📉 NTTIS AI SOLUTION - Customer Churn Prediction Dashboard")
 
 # Tabs
-tabs = ["Upload & Predict", "Visualizations", "Churn Summary", "Chat with Agent"]
+tabs = ["Upload & Predict", "Visualizations", "Churn Summary", "Chat with AI Support"]
 selected_tab = st.sidebar.radio("Navigate", tabs)
 
 # Initialize global DataFrame
 if "churn_predictions_df" not in st.session_state:
     st.session_state.churn_predictions_df = pd.DataFrame()
-    churn_predictions_df.columns = churn_predictions_df.columns.str.strip()
-    churn_predictions_df.columns = churn_predictions_df.columns.str.lower()
+    #churn_predictions_df.columns = churn_predictions_df.columns.str.strip()
+    #churn_predictions_df.columns = churn_predictions_df.columns.str.lower()
 
 if selected_tab == "Upload & Predict":
     st.subheader("📤 Upload Customer Data (CSV)")
@@ -103,8 +102,8 @@ elif selected_tab == "Churn Summary":
     else:
         st.warning("Please upload and predict data in the 'Upload & Predict' tab first.")
 
-elif selected_tab == "Chat with Agent":
-    st.title("🤖 Chat with Agent")
+elif selected_tab == "Chat with AI Support":
+    st.title("🤖 Chat with AI Support")
     st.markdown("The agent will respond based on your churn profile.")
 
     if churn_predictions_df is not None and "customerID" in churn_predictions_df.columns:
