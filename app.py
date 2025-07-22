@@ -57,7 +57,7 @@ elif selected_tab == "Visualizations":
 
         st.markdown("### 🔹 Churn Count Plot", unsafe_allow_html=True)
         fig1, ax1 = plt.subplots()
-        sns.countplot(data=user_df, x="churn_prediction", palette="coolwarm", ax=ax1)
+        sns.countplot(data=user_df, x="Churn", palette="coolwarm", ax=ax1)
         ax1.set_title("Customer Churn Distribution", fontsize=14)
         st.pyplot(fig1)
 
@@ -89,7 +89,7 @@ elif selected_tab == "Churn Summary":
     if not st.session_state.churn_predictions_df.empty:
         df = st.session_state.churn_predictions_df
 
-        churn_count = df["churn_prediction"].value_counts()
+        churn_count = df["Churn"].value_counts()
         st.write("### Churn Counts", churn_count)
 
         st.write("### Churn Percentage")
@@ -118,8 +118,8 @@ elif selected_tab == "Chat with Agent":
             st.write("📄 Customer Profile:")
             st.dataframe(customer_data.T)
 
-            predicted_churn = customer_data["churn_prediction"].values[0]
-            profile_text = customer_data.drop(columns=["customerID", "churn_prediction"]).to_dict(orient="records")[0]
+            predicted_churn = customer_data["Churn"].values[0]
+            profile_text = customer_data.drop(columns=["customerID", "Churn"]).to_dict(orient="records")[0]
 
             user_input = st.text_input("💬 You (Ask the Agent about this customer):", placeholder="Why might this customer churn?")
             
