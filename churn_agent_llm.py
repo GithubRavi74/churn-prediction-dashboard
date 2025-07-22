@@ -1,30 +1,38 @@
 import os
-import openai
+from openai import OpenAI
+from dotenv import load_dotenv
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Load environment variables (useful if you're running locally with a .env file)
+load_dotenv()
 
-def generate_response(customer_data: dict, user_message: str) -> str:
-    customer_info = ", ".join([f"{k}: {v}" for k, v in customer_data.items()])
-    prompt = f"""
-You are a customer retention assistant for a telecom company. Based on the customer's profile and their concern, give a helpful and friendly reply.
+# Initialize OpenAI client
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-Customer Details: {customer_info}
-Customer Message: {user_message}
+def generate_response(customer_data_dict, user_message):
+    """
+    Generates a response from the AI agent based on customer data and user message.
 
-Your Response:
-"""
+    Args:
+        customer_data_dict (dict): Dictionary of customer attributes.
+        user_message (str): Message/question entered by the user.
 
-    try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # or "gpt-4" if you're on Pro
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.7,
-            max_tokens=300
-        )
-        return response.choices[0].message["content"].strip()
+    Returns:
+        str: AI-generated reply.
+    """
+    prompt = f"""You are a customer retention agent. You are given this customer's data:
+{customer_data_dict}
 
-    except Exception as e:
-        return f"Error generating response: {e}"
+The user asked:
+"{user_message}"
+
+Respond as a helpful AI agent trying to retain the customer. Keep it friendly, clear, and informative."""
+
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a helpful customer retention AI agent."},
+            {"role": "user", "content": prompt}
+        ]
+    )
+
+    return response.choices[0].message.content
