@@ -9,3 +9,4 @@ shap
 ipython
 cloudpickle
 openai
+groq
