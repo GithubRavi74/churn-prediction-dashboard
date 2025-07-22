@@ -1,12 +1,15 @@
 import os
+import streamlit as st
 from openai import OpenAI
-from dotenv import load_dotenv
 
+# For Streamlit Cloud, you don’t need dotenv
+#from dotenv import load_dotenv
 # Load environment variables (useful if you're running locally with a .env file)
-load_dotenv()
+#load_dotenv()
 
 # Initialize OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 def generate_response(customer_data_dict, user_message):
     """
