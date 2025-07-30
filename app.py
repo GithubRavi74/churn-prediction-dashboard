@@ -75,6 +75,13 @@ elif selected_tab == "Visualizations":
         num_cols = user_df.select_dtypes(include=["int", "float"]).columns.tolist()
 
         if view_option == 'Summary Table':
+            #summary_df = user_df[num_cols].describe().T
+            #summary_df = summary_df.drop(columns=["count"])
+            #st.dataframe(summary_df)
+
+            num_cols = user_df.select_dtypes(include=["int", "float"]).columns.tolist()
+            # Remove customerID if it's in num_cols
+            num_cols = [col for col in num_cols if col.lower() != "customerid"]
             summary_df = user_df[num_cols].describe().T
             summary_df = summary_df.drop(columns=["count"])
             st.dataframe(summary_df)
