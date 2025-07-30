@@ -7,7 +7,6 @@ import cloudpickle
 from sklearn.metrics import classification_report, confusion_matrix
 from churn_agent_llm import generate_response
 
-
 # Load the trained pipeline
 with open("churn_pipeline.pkl", "rb") as file:
     pipeline = cloudpickle.load(file)
@@ -48,6 +47,12 @@ if selected_tab == "Upload & Predict":
         st.dataframe(user_df[["customerID", "Churn", "Churn_Probability"]])
         # Save to session state
         st.session_state.churn_predictions_df = user_df
+
+        # If user revisits the tab and file is already in session
+    elif "uploaded_file" in st.session_state:
+        st.write("### Sample Data of the uploaded file")
+        st.dataframe(st.session_state["uploaded_df"].head())
+
 elif selected_tab == "Visualizations":
     st.subheader("📊 Churn Distribution Visualization")
 
@@ -62,17 +67,19 @@ elif selected_tab == "Visualizations":
 
         st.markdown("---")  # Line break
 
-        st.markdown("### 🔹 Numerical Feature Analysis", unsafe_allow_html=True)
+        st.markdown("### 🔹 Uploaded data numerical insights", unsafe_allow_html=True)
         view_option = st.radio(
-            "Choose how to view numerical insights:",
+            "Choose how to view the insights:",
             ('Summary Table', 'Box Plots')
         )
         num_cols = user_df.select_dtypes(include=["int", "float"]).columns.tolist()
 
         if view_option == 'Summary Table':
-            st.dataframe(user_df[num_cols].describe().T)
+            summary_df = user_df[num_cols].describe().T
+            summary_df = summary_df.drop("count", axis=0)  # axis=0 removes the row
+            st.dataframe(summary_df)
         else:
-            st.write("### Box Plots for Numerical Features")
+            st.write("### Box Plots")
             for col in num_cols:
                 fig, ax = plt.subplots()
                 sns.boxplot(data=user_df, x="Churn", y=col, palette="Set2", ax=ax)
@@ -120,7 +127,8 @@ elif selected_tab == "Chat with AI Support":
             predicted_churn = customer_data["Churn"].values[0]
             profile_text = customer_data.drop(columns=["customerID", "Churn"]).to_dict(orient="records")[0]
 
-            user_input = st.text_input("💬 You (Ask the Agent about this customer):", placeholder="Why might this customer churn?")
+            #user_input = st.text_input("💬 You (Ask AI Agent about this customer):", placeholder="Type your query")
+            user_input = st.text_input("", placeholder="Type your query here and get your answer from AI Agent about this customer")
             
             if user_input:
                 with st.spinner("Generating response..."):
