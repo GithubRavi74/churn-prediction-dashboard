@@ -76,8 +76,9 @@ elif selected_tab == "Visualizations":
 
         if view_option == 'Summary Table':
             summary_df = user_df[num_cols].describe().T
-            summary_df = summary_df.drop("count", axis=0)  # axis=0 removes the row
+            summary_df = summary_df.drop(columns=["count"])
             st.dataframe(summary_df)
+               
         else:
             st.write("### Box Plots")
             for col in num_cols:
