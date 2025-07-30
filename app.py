@@ -88,6 +88,7 @@ elif selected_tab == "Visualizations":
                
         else:
             st.write("### Box Plots")
+            num_cols = [col for col in num_cols if col.lower() != "customerid"]
             for col in num_cols:
                 fig, ax = plt.subplots()
                 sns.boxplot(data=user_df, x="Churn", y=col, palette="Set2", ax=ax)
