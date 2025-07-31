@@ -159,14 +159,8 @@ elif selected_tab == "Chat with AI Support":
             if customer_id not in st.session_state.chat_history:
                 st.session_state.chat_history[customer_id] = []
 
-            # ✅ Add Clear Chat Button
-            if st.button("🗑️ Clear Chat for this Customer"):
-                st.session_state.chat_history[customer_id] = []  # Clear stored messages
-                st.session_state[f"chat_input_{customer_id}"] = ""  # Reset input box
-                chat_placeholder.empty()  # Clear chat display
-                st.experimental_rerun()  # Refresh UI
-            
-            #chat_placeholder = st.empty()
+                      
+            chat_placeholder = st.empty()
 
             def render_chat():
                 with chat_placeholder.container():
@@ -178,6 +172,13 @@ elif selected_tab == "Chat with AI Support":
 
             render_chat()
 
+            # ✅ Add Clear Chat Button
+            if st.button("🗑️ Clear Chat for this Customer"):
+                st.session_state.chat_history[customer_id] = []  # Clear stored messages
+                st.session_state[f"chat_input_{customer_id}"] = ""  # Reset input box
+                chat_placeholder.empty()  # Clear chat display
+                st.experimental_rerun()  # Refresh UI
+            
             user_input = st.text_input(
                 "💬 You (Ask the AI Agent about this customer):",
                 placeholder="Type your query here...",
