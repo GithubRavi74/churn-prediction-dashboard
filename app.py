@@ -173,7 +173,7 @@ elif selected_tab == "Chat with AI Support":
                         st.session_state.chat_history.insert(0, ("You", user_input))
 
                         #if you still want the latest reply to appear immediately below the input box, just add this line after inserting into chat_history:
-                        st.markdown(f"**Agent:** {reply}")
+                        #st.markdown(f"**Agent:** {reply}")
 
                     except Exception as e:
                         st.error(f"❌ LLM Error: {str(e)}")
