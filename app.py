@@ -13,7 +13,7 @@ with open("churn_pipeline.pkl", "rb") as file:
 
 # App title
 st.set_page_config(page_title="Customer Churn Prediction", layout="wide")
-st.title("📉 NTTIS AI SOLUTION - Customer Churn Prediction Dashboard")
+st.title("📉 NTTIS AI SOLUTION - CCPD-  Customer Churn Prediction Dashboard")
 
 # Tabs
 tabs = ["Upload & Predict", "Visualizations", "Churn Summary", "Chat with AI Support"]
