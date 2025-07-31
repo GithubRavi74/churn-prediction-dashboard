@@ -121,7 +121,13 @@ elif selected_tab == "Churn Summary":
 elif selected_tab == "Chat with AI Support":
     st.title("🤖 Chat with AI Support")
     st.markdown("The agent will respond based on your churn profile.")
+
+    # ✅ Initialize chat history
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
+        
     churn_predictions_df = st.session_state.get("churn_predictions_df", None)
+    
     if churn_predictions_df is not None and "customerID" in churn_predictions_df.columns:
         churn_predictions_df.columns = churn_predictions_df.columns.str.strip()
         customer_ids = churn_predictions_df["customerID"].unique()
@@ -136,6 +142,15 @@ elif selected_tab == "Chat with AI Support":
             predicted_churn = customer_data["Churn"].values[0]
             profile_text = customer_data.drop(columns=["customerID", "Churn"]).to_dict(orient="records")[0]
 
+            # ✅ Display chat history on top
+            st.subheader("💬 Chat History")
+            for sender, msg in st.session_state.chat_history:
+                if sender == "You":
+                    st.markdown(f"👤 **You:** {msg}")
+                else:
+                    st.markdown(f"🤖 **Agent:** {msg}")
+            
+            # ✅ Input box
             #user_input = st.text_input("💬 You (Ask AI Agent about this customer):", placeholder="Type your query")
             user_input = st.text_input("", placeholder="Type your query here and get your answer from AI Agent about this customer")
             
@@ -144,6 +159,12 @@ elif selected_tab == "Chat with AI Support":
                     try:
                         customer_data_dict = customer_data.iloc[0].drop(["customerID"]).to_dict()
                         reply = generate_response(customer_data_dict, user_input)
+
+                         # ✅ Save chat history (new messages on top)
+                        st.session_state.chat_history.insert(0, ("Agent", reply))
+                        st.session_state.chat_history.insert(0, ("You", user_input))
+
+                        #if you still want the latest reply to appear immediately below the input box, just add this line after inserting into chat_history:
                         st.markdown(f"**Agent:** {reply}")
 
                     except Exception as e:
