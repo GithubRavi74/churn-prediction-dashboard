@@ -28,13 +28,13 @@ def generate_response(customer_data_dict, user_message):
     Returns:
         str: AI-generated reply.
     """
-    prompt = f"""You are a customer retention agent. You are given this customer's data:
+    prompt = f"""You are a customer support executive. You are given this customer's data:
 {customer_data_dict}
 
 The user asked:
 "{user_message}"
 
-Respond as a helpful AI agent trying to retain the customer. Keep it friendly, clear, and informative."""
+Respond straight and short but Keep it friendly, clear, and informative."""
 # not using open ai so removed the code line the model="gpt-3.5-turbo", and using groq "llama3-8b-8192"   Or for even better results "llama3-70b-8192" 
     response = client.chat.completions.create(
         model="llama3-70b-8192",
