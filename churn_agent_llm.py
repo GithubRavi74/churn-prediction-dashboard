@@ -34,7 +34,7 @@ def generate_response(customer_data_dict, user_message):
 The user asked:
 "{user_message}"
 
-Respond straight and short but Keep it friendly, clear, and informative."""
+Respond in 1 line or 2 but Keep it friendly, clear, and informative."""
 # not using open ai so removed the code line the model="gpt-3.5-turbo", and using groq "llama3-8b-8192"   Or for even better results "llama3-70b-8192" 
     response = client.chat.completions.create(
         model="llama3-70b-8192",
