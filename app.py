@@ -133,6 +133,14 @@ elif selected_tab == "Chat with AI Support":
         customer_ids = churn_predictions_df["customerID"].unique()
         customer_id = st.selectbox("Select a Customer ID", customer_ids)
 
+        # Clear chat history if customer_id changes
+        if "last_customer_id" not in st.session_state:
+            st.session_state.last_customer_id = customer_id
+
+        if customer_id != st.session_state.last_customer_id:
+            st.session_state.chat_history = []  # Clear chat history
+            st.session_state.last_customer_id = customer_id
+
         customer_data = churn_predictions_df[churn_predictions_df["customerID"] == customer_id]
         
         if not customer_data.empty:
