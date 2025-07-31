@@ -162,7 +162,7 @@ elif selected_tab == "Chat with AI Support":
             # ✅ Add Clear Chat Button
             if st.button("🗑️ Clear Chat for this Customer"):
                 st.session_state.chat_history[customer_id] = []
-                save_chat_history(st.session_state.chat_history)
+                #save_chat_history(st.session_state.chat_history)
                 st.success("Chat history cleared!")
 
             
