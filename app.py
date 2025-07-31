@@ -165,36 +165,40 @@ elif selected_tab == "Chat with AI Support":
 
             render_chat()
 
-            
+            user_input_key = f"chat_input_{customer_id}"
 
-            # ✅ Input Box
             user_input = st.text_input(
-                "💬 You (Ask the AI Agent about this customer):",
-                placeholder="Type your query here...",
-                key=f"chat_input_{customer_id}"
+            "💬 You (Ask the AI Agent about this customer):",
+            placeholder="Type your query here...",
+            key=user_input_key
             )
 
-            # ✅ Clear Chat Button
+            # ⬇️ Clear Chat Button AFTER input
             if st.button("🗑️ Clear Chat for this Customer"):
-                st.session_state.chat_history[customer_id] = []
-                st.session_state[f"chat_input_{customer_id}"] = ""
+                st.session_state.chat_history[customer_id] = []  # Clear messages
+                st.session_state[user_input_key] = ""  # Clear input text
                 chat_placeholder.empty()
                 st.rerun()
-                
+
+            # ✅ Process user input
             if user_input:
                 with st.spinner("Generating response..."):
                     try:
                         customer_data_dict = customer_data.iloc[0].drop(["customerID"]).fillna("N/A").to_dict()
                         reply = generate_response(customer_data_dict, user_input)
 
-                        # ✅ Append chat history
+                        # Append messages
                         st.session_state.chat_history[customer_id].append(("user", user_input))
                         st.session_state.chat_history[customer_id].append(("agent", reply))
+
+                        # ⬅️ Clear input box after submit
+                        st.session_state[user_input_key] = ""
 
                         render_chat()
 
                     except Exception as e:
-                        st.error(f"❌ LLM Error: {str(e)}")
+                    st.error(f"❌ LLM Error: {str(e)}")
+
         else:
             st.warning("Selected customer ID not found in uploaded data.")
     else:
