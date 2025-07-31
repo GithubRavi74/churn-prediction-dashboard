@@ -121,10 +121,7 @@ elif selected_tab == "Churn Summary":
 elif selected_tab == "Chat with AI Support":
     st.title("🤖 Chat with AI Support")
     st.markdown("The agent will respond based on your churn profile.")
-
-    # ✅ Initialize chat history
-    #if "chat_history" not in st.session_state:
-        #st.session_state.chat_history = []
+    
         
     churn_predictions_df = st.session_state.get("churn_predictions_df", None)
     
