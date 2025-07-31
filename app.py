@@ -138,8 +138,9 @@ elif selected_tab == "Chat with AI Support":
             st.session_state.last_customer_id = customer_id
 
         if customer_id != st.session_state.last_customer_id:
-            st.session_state.chat_history = []  # Clear chat history
             st.session_state.last_customer_id = customer_id
+            if customer_id not in st.session_state.chat_history:
+                st.session_state.chat_history[customer_id] = []
 
         customer_data = churn_predictions_df[churn_predictions_df["customerID"] == customer_id]
         
