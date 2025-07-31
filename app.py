@@ -152,6 +152,20 @@ elif selected_tab == "Chat with AI Support":
             st.write("📄 Customer Profile:")
             st.dataframe(customer_data.T)
 
+            # Ensure chat history exists for each customer separately
+            if "chat_history" not in st.session_state:
+                st.session_state.chat_history = load_chat_history()
+
+            if customer_id not in st.session_state.chat_history:
+                st.session_state.chat_history[customer_id] = []
+
+            # ✅ Add Clear Chat Button
+            if st.button("🗑️ Clear Chat for this Customer"):
+                st.session_state.chat_history[customer_id] = []
+                save_chat_history(st.session_state.chat_history)
+                st.success("Chat history cleared!")
+
+            
             chat_placeholder = st.empty()
 
             def render_chat():
