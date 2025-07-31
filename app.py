@@ -148,10 +148,12 @@ elif selected_tab == "Chat with AI Support":
             st.dataframe(customer_data.T)
 
             predicted_churn = customer_data["Churn"].values[0]
-            profile_text = customer_data.drop(columns=["customerID", "Churn"]).to_dict(orient="records")[0]
 
-            #commented the below code because we don’t actually need profile_text separately—we already build customer_data_dict for generate_response().
+             #commented the below code because we don’t actually need profile_text separately—we already build customer_data_dict for generate_response().
             #But if your generate_response() still expects a formatted profile text, we can put it back just before calling the function.
+            #profile_text = customer_data.drop(columns=["customerID", "Churn"]).to_dict(orient="records")[0]
+
+           
             # ✅ Display chat history on top
             #st.subheader("💬 Chat History")
             #for sender, msg in st.session_state.chat_history:
