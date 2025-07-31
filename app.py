@@ -160,7 +160,9 @@ elif selected_tab == "Chat with AI Support":
             
             # ✅ Input box
             #user_input = st.text_input("💬 You (Ask AI Agent about this customer):", placeholder="Type your query")
-            user_input = st.text_input("", placeholder="Type your query here and get your answer from AI Agent about this customer")
+            #user_input = st.text_input("", placeholder="Type your query here and get your answer from AI Agent about this customer")
+            user_input = st.text_input("💬 You (Ask the AI Agent about this customer):", placeholder="Type your query here..",key=f"chat_input_{customer_id}"  # Unique key for each customer
+)
             
             if user_input:
                 with st.spinner("Generating response..."):
