@@ -170,7 +170,7 @@ elif selected_tab == "Chat with AI Support":
                 st.session_state.chat_history[customer_id] = []
                 st.session_state[f"chat_input_{customer_id}"] = ""
                 chat_placeholder.empty()
-                st.experimental_rerun()
+                st.rerun()
 
             # ✅ Input Box
             user_input = st.text_input(
