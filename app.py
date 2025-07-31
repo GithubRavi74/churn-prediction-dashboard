@@ -166,7 +166,7 @@ elif selected_tab == "Chat with AI Support":
                 chat_placeholder.empty()  # Clear chat display
                 st.experimental_rerun()  # Refresh UI
             
-            chat_placeholder = st.empty()
+            #chat_placeholder = st.empty()
 
             def render_chat():
                 with chat_placeholder.container():
