@@ -123,8 +123,8 @@ elif selected_tab == "Chat with AI Support":
     st.markdown("The agent will respond based on your churn profile.")
 
     # ✅ Initialize chat history
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
+    #if "chat_history" not in st.session_state:
+        #st.session_state.chat_history = []
         
     churn_predictions_df = st.session_state.get("churn_predictions_df", None)
     
@@ -164,9 +164,9 @@ elif selected_tab == "Chat with AI Support":
 
             # Ensure chat history exists for each customer separately
             if "chat_history" not in st.session_state:
-                st.session_state.chat_history = {}
+                st.session_state.chat_history = {} # Initialize as an empty dict
             if customer_id not in st.session_state.chat_history:
-                st.session_state.chat_history[customer_id] = []
+                st.session_state.chat_history[customer_id] = [] # Create empty history for this customer
             
             chat_placeholder = st.empty()
             
