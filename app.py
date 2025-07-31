@@ -173,7 +173,7 @@ elif selected_tab == "Chat with AI Support":
 
                         # ✅ Mark input for clearing after rerun
                         st.session_state.pending_clear_input = user_input_key
-                        st.experimental_rerun()
+                        st.rerun()
 
                     except Exception as e:
                         st.error(f"❌ LLM Error: {str(e)}")
