@@ -152,14 +152,7 @@ elif selected_tab == "Chat with AI Support":
             st.write("📄 Customer Profile:")
             st.dataframe(customer_data.T)
 
-            # Ensure chat history exists for each customer separately
-            if "chat_history" not in st.session_state:
-                st.session_state.chat_history = load_chat_history()
-
-            if customer_id not in st.session_state.chat_history:
-                st.session_state.chat_history[customer_id] = []
-
-                      
+            # ✅ Chat display
             chat_placeholder = st.empty()
 
             def render_chat():
@@ -172,17 +165,18 @@ elif selected_tab == "Chat with AI Support":
 
             render_chat()
 
-            # ✅ Add Clear Chat Button
+            # ✅ Clear Chat Button
             if st.button("🗑️ Clear Chat for this Customer"):
-                st.session_state.chat_history[customer_id] = []  # Clear stored messages
-                st.session_state[f"chat_input_{customer_id}"] = ""  # Reset input box
-                chat_placeholder.empty()  # Clear chat display
-                st.experimental_rerun()  # Refresh UI
-            
+                st.session_state.chat_history[customer_id] = []
+                st.session_state[f"chat_input_{customer_id}"] = ""
+                chat_placeholder.empty()
+                st.experimental_rerun()
+
+            # ✅ Input Box
             user_input = st.text_input(
                 "💬 You (Ask the AI Agent about this customer):",
                 placeholder="Type your query here...",
-                key=f"chat_input_{customer_id}"  # unique per customer
+                key=f"chat_input_{customer_id}"
             )
 
             if user_input:
@@ -191,7 +185,7 @@ elif selected_tab == "Chat with AI Support":
                         customer_data_dict = customer_data.iloc[0].drop(["customerID"]).fillna("N/A").to_dict()
                         reply = generate_response(customer_data_dict, user_input)
 
-                        # Append user and agent responses
+                        # ✅ Append chat history
                         st.session_state.chat_history[customer_id].append(("user", user_input))
                         st.session_state.chat_history[customer_id].append(("agent", reply))
 
@@ -203,5 +197,6 @@ elif selected_tab == "Chat with AI Support":
             st.warning("Selected customer ID not found in uploaded data.")
     else:
         st.info("📤 Please upload and predict data first in the 'Upload & Predict' tab.")
+
  
     
