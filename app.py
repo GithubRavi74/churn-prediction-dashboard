@@ -121,53 +121,39 @@ elif selected_tab == "Churn Summary":
 elif selected_tab == "Chat with AI Support":
     st.title("🤖 Chat with AI Support")
     st.markdown("The agent will respond based on your churn profile.")
-    
-        
+
     churn_predictions_df = st.session_state.get("churn_predictions_df", None)
-    
+
     if churn_predictions_df is not None and "customerID" in churn_predictions_df.columns:
         churn_predictions_df.columns = churn_predictions_df.columns.str.strip()
         customer_ids = churn_predictions_df["customerID"].unique()
         customer_id = st.selectbox("Select a Customer ID", customer_ids)
 
-        # Clear chat history if customer_id changes
+        # ✅ Ensure chat history dictionary is initialized
+        if "chat_history" not in st.session_state:
+            st.session_state.chat_history = {}
+
         if "last_customer_id" not in st.session_state:
             st.session_state.last_customer_id = customer_id
 
+        # ✅ Reset chat history only for new customer
         if customer_id != st.session_state.last_customer_id:
             st.session_state.last_customer_id = customer_id
             if customer_id not in st.session_state.chat_history:
                 st.session_state.chat_history[customer_id] = []
 
+        # ✅ Initialize per-customer chat history if not present
+        if customer_id not in st.session_state.chat_history:
+            st.session_state.chat_history[customer_id] = []
+
         customer_data = churn_predictions_df[churn_predictions_df["customerID"] == customer_id]
-        
+
         if not customer_data.empty:
             st.write("📄 Customer Profile:")
             st.dataframe(customer_data.T)
 
-            predicted_churn = customer_data["Churn"].values[0]
-
-             #commented the below code because we don’t actually need profile_text separately—we already build customer_data_dict for generate_response().
-            #But if your generate_response() still expects a formatted profile text, we can put it back just before calling the function.
-            #profile_text = customer_data.drop(columns=["customerID", "Churn"]).to_dict(orient="records")[0]
-
-           
-            # ✅ Display chat history on top
-            #st.subheader("💬 Chat History")
-            #for sender, msg in st.session_state.chat_history:
-                #if sender == "You":
-                    #st.markdown(f"👤 **You:** {msg}")
-                #else:
-                    #st.markdown(f"🤖 **Agent:** {msg}")
-
-            # Ensure chat history exists for each customer separately
-            if "chat_history" not in st.session_state:
-                st.session_state.chat_history = {} # Initialize as an empty dict
-            if customer_id not in st.session_state.chat_history:
-                st.session_state.chat_history[customer_id] = [] # Create empty history for this customer
-            
             chat_placeholder = st.empty()
-            
+
             def render_chat():
                 with chat_placeholder.container():
                     for sender, msg in st.session_state.chat_history[customer_id]:
@@ -178,35 +164,23 @@ elif selected_tab == "Chat with AI Support":
 
             render_chat()
 
+            user_input = st.text_input(
+                "💬 You (Ask the AI Agent about this customer):",
+                placeholder="Type your query here...",
+                key=f"chat_input_{customer_id}"  # unique per customer
+            )
 
-            
-            # ✅ Input box
-            #user_input = st.text_input("💬 You (Ask AI Agent about this customer):", placeholder="Type your query")
-            #user_input = st.text_input("", placeholder="Type your query here and get your answer from AI Agent about this customer")
-            user_input = st.text_input("💬 You (Ask the AI Agent about this customer):", placeholder="Type your query here..",key=f"chat_input_{customer_id}"  # Unique key for each customer
-)
-            
             if user_input:
                 with st.spinner("Generating response..."):
                     try:
-                        customer_data_dict = customer_data.iloc[0].drop(["customerID"]).to_dict()
-                        customer_data_dict = (customer_data.iloc[0].drop(["customerID"]).fillna("N/A").to_dict())
+                        customer_data_dict = customer_data.iloc[0].drop(["customerID"]).fillna("N/A").to_dict()
                         reply = generate_response(customer_data_dict, user_input)
 
-                        # ✅ Save chat history (new messages on top)
-                        #st.session_state.chat_history.insert(0, ("Agent", reply))
-                        #st.session_state.chat_history.insert(0, ("You", user_input))
-                        
-                        # Store messages for this customer
+                        # Append user and agent responses
                         st.session_state.chat_history[customer_id].append(("user", user_input))
                         st.session_state.chat_history[customer_id].append(("agent", reply))
 
-                        render_chat()  # Refresh chat to show new messages
-
-                         
-
-                        #if you still want the latest reply to appear immediately below the input box, just add this line after inserting into chat_history:
-                        #st.markdown(f"**Agent:** {reply}")
+                        render_chat()
 
                     except Exception as e:
                         st.error(f"❌ LLM Error: {str(e)}")
@@ -214,3 +188,5 @@ elif selected_tab == "Chat with AI Support":
             st.warning("Selected customer ID not found in uploaded data.")
     else:
         st.info("📤 Please upload and predict data first in the 'Upload & Predict' tab.")
+ 
+    
