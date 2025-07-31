@@ -165,12 +165,7 @@ elif selected_tab == "Chat with AI Support":
 
             render_chat()
 
-            # ✅ Clear Chat Button
-            if st.button("🗑️ Clear Chat for this Customer"):
-                st.session_state.chat_history[customer_id] = []
-                st.session_state[f"chat_input_{customer_id}"] = ""
-                chat_placeholder.empty()
-                st.rerun()
+            
 
             # ✅ Input Box
             user_input = st.text_input(
@@ -179,6 +174,13 @@ elif selected_tab == "Chat with AI Support":
                 key=f"chat_input_{customer_id}"
             )
 
+            # ✅ Clear Chat Button
+            if st.button("🗑️ Clear Chat for this Customer"):
+                st.session_state.chat_history[customer_id] = []
+                st.session_state[f"chat_input_{customer_id}"] = ""
+                chat_placeholder.empty()
+                st.rerun()
+                
             if user_input:
                 with st.spinner("Generating response..."):
                     try:
