@@ -158,7 +158,7 @@ elif selected_tab == "Chat with AI Support":
             if st.button("🗑️ Clear Chat for this Customer"):
                 st.session_state.chat_history[customer_id] = []
                 st.session_state.pending_clear_input = user_input_key
-                st.experimental_rerun()
+                st.rerun()
 
             if user_input:
                 with st.spinner("Generating response..."):
